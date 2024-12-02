@@ -1,0 +1,3 @@
+functions: thrust, isp, deltav, drag, and version
+------------------
+if you need help type: help.functions(function being the functions above)
