@@ -1,4 +1,3 @@
-# working.py
 from terminal import terminal
 from rocket_calculations import thrust_force, specific_impulse, delta_v, drag_force
 
@@ -49,13 +48,67 @@ def show_help(topic):
         Purpose: Calculates aerodynamic drag on the rocket.
         Example: Lower drag improves rocket efficiency.
         """,
+        "LIFT": """
+        Lift Force Calculation:
+        -----------------------
+        Formula: F_lift = 0.5 * C_l * A * ρ * V²
+        - C_l: Lift coefficient
+        - A: Cross-sectional area (m²)
+        - ρ: Air density (kg/m³)
+        - V: Velocity (m/s)
+        
+        Purpose: Calculates lift acting on the rocket, contributing to stability.
+        Example: Higher lift improves stability in flight.
+        """,
+        "REYNOLDS": """
+        Reynolds Number Calculation:
+        ----------------------------
+        Formula: Re = ρ * V * L / μ
+        - ρ: Air density (kg/m³)
+        - V: Velocity (m/s)
+        - L: Characteristic length (m)
+        - μ: Dynamic viscosity (kg/(m·s))
+        
+        Purpose: Determines the flow regime (laminar or turbulent).
+        Example: Higher Reynolds numbers indicate turbulent flow.
+        """,
+        "STRESS": """
+        Stress Calculation:
+        -------------------
+        Formula: σ = F / A
+        - F: Force (N)
+        - A: Area (m²)
+        
+        Purpose: Calculates stress on the rocket structure.
+        Example: High stress may cause material failure.
+        """,
+        "STRAIN": """
+        Strain Calculation:
+        -------------------
+        Formula: ε = ΔL / L₀
+        - ΔL: Change in length (m)
+        - L₀: Original length (m)
+        
+        Purpose: Measures the deformation of material under stress.
+        Example: Large strain indicates material stretching or failure.
+        """,
+        "SAFETY": """
+        Safety Factor Calculation:
+        --------------------------
+        Formula: SF = σ_yield / σ_working
+        - σ_yield: Yield stress (Pa)
+        - σ_working: Working stress (Pa)
+        
+        Purpose: Ensures safety by comparing material strength and operational stress.
+        Example: A high safety factor reduces the chance of failure.
+        """,
         "VERSION" : """
-        Version number 0.1.5
-        Functions: thrust, isp, deltav, and drag 
+        Version number 0.2.0
+        Functions: thrust, isp, deltav, drag, lift, reynolds, stress, strain, safety, and more
         """,
         "VER" : """
-        Version number 0.1.5
-        Functions: thrust, isp, deltav, and drag 
+        Version number 0.2.0
+        Functions: thrust, isp, deltav, drag, lift, reynolds, stress, strain, safety, and more
         """
     }
 
@@ -63,10 +116,10 @@ def show_help(topic):
     if topic in help_topics:
         print(help_topics[topic])
     else:
-        print("Help topic not found. Try HELP.THRUST, HELP.ISP, HELP.DELTAV, or HELP.DRAG or look at the manule in the folder")
+        print("Help topic not found. Try HELP.THRUST, HELP.ISP, HELP.DELTAV, HELP.DRAG, or check the manual.")
 
 def handle_command(command):
-    if command.startswith("HELP."):
+    if command.startswith("HELP.") :
         _, topic = command.split(".")
         show_help(topic)
     elif command == "THRUST":
@@ -93,5 +146,81 @@ def handle_command(command):
         V = float(input("Enter velocity (m/s): "))
         drag = drag_force(C_d, A, rho, V)
         print(f"Drag Force: {drag:.2f} N")
+    elif command == "LIFT":
+        C_l = float(input("Enter lift coefficient: "))
+        A = float(input("Enter cross-sectional area (m²): "))
+        rho = float(input("Enter air density (kg/m³): "))
+        V = float(input("Enter velocity (m/s): "))
+        lift = 0.5 * C_l * A * rho * V**2
+        print(f"Lift Force: {lift:.2f} N")
+    elif command == "REYNOLDS":
+        rho = float(input("Enter air density (kg/m³): "))
+        V = float(input("Enter velocity (m/s): "))
+        L = float(input("Enter characteristic length (m): "))
+        mu = float(input("Enter dynamic viscosity (kg/(m·s)): "))
+        reynolds = rho * V * L / mu
+        print(f"Reynolds Number: {reynolds:.2f}")
+    elif command == "STRESS":
+        F = float(input("Enter force (N): "))
+        A = float(input("Enter area (m²): "))
+        stress = F / A
+        print(f"Stress: {stress:.2f} Pa")
+    elif command == "STRAIN":
+        ΔL = float(input("Enter change in length (m): "))
+        L0 = float(input("Enter original length (m): "))
+        strain = ΔL / L0
+        print(f"Strain: {strain:.2f}")
+    elif command == "SAFETY":
+        σ_yield = float(input("Enter yield stress (Pa): "))
+        σ_working = float(input("Enter working stress (Pa): "))
+        safety = σ_yield / σ_working
+        print(f"Safety Factor: {safety:.2f}")
     else:
-        print("Unknown command. Try THRUST, ISP, DELTAV, DRAG, or HELP.<command>.")
+        print("Unknown command. Try THRUST, ISP, DELTAV, DRAG, LIFT, REYNOLDS, STRESS, STRAIN, SAFETY,Avanced Search ,or HELP.<command>.")
+
+def advanced_search():
+    search_term = input("Enter a keyword to search: ").lower()
+    results = {
+        "thrust": "Thrust force calculation is based on mass flow rate and exhaust velocity.",
+        "isp": "Specific impulse relates thrust force to mass flow rate and standard gravity.",
+        "deltav": "Delta-V is used for maneuvering and changing velocity.",
+        "drag": "Drag force depends on velocity, air density, drag coefficient, and area.",
+        "lift": "Lift force helps with the rocket’s stability during flight.",
+        "stress": "Stress determines the load a material can withstand before failing.",
+        "strain": "Strain measures the deformation of the material.",
+        "safety": "Safety factor ensures that a material can operate safely under load."
+    }
+    
+    results_found = [key for key in results if search_term in key or search_term in results[key]]
+    if results_found:
+        for result in results_found:
+            print(f"Found: {result.capitalize()} - {results[result]}")
+    else:
+        print("No results found for that term.")
+
+def main():
+    while True:
+        print("\nRocket Calculation Menu:")
+        print("1. THRUST")
+        print("2. ISP")
+        print("3. DELTAV")
+        print("4. DRAG")
+        print("5. LIFT")
+        print("6. REYNOLDS")
+        print("7. STRESS")
+        print("8. STRAIN")
+        print("9. SAFETY")
+        print("10. Advanced Search")
+        print("11. Exit")
+        
+        command = input("\nEnter command: ").upper()
+        
+        if command == "EXIT":
+            break
+        elif command == "ADVANCED SEARCH":
+            advanced_search()
+        else:
+            handle_command(command)
+
+if __name__ == "__main__":
+    main()
